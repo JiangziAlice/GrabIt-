@@ -7,7 +7,7 @@ export default defineConfig({
     name: "Text Collector",
     description: "A browser extension to collect and manage selected text",
     version: "1.0.0",
-    permissions: ["storage", "activeTab"],
+    permissions: ["storage", "activeTab", "contextMenus"],
     host_permissions: ["<all_urls>"],
   },
   runner: {

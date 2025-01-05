@@ -3,46 +3,12 @@ import { defineContentScript } from "wxt/sandbox";
 export default defineContentScript({
   matches: ["<all_urls>"],
   main() {
-    document.addEventListener("mouseup", async () => {
-      const selectedText = window.getSelection()?.toString().trim();
-
-      if (selectedText) {
-        const type = detectContentType(selectedText);
-
-        browser.storage.local.get(["savedTexts"]).then((result) => {
-          const savedItems = result.savedTexts || [];
-          savedItems.push({
-            id: Date.now(),
-            text: selectedText,
-            timestamp: new Date().toISOString(),
-            type: type,
-            url: window.location.href,
-            title: document.title,
-          });
-
-          browser.storage.local.set({ savedTexts: savedItems }).then(() => {
-            showSaveNotification();
-          });
-        });
+    // 监听来自后台脚本的消息
+    chrome.runtime.onMessage.addListener((message) => {
+      if (message.type === "showSaveNotification") {
+        showSaveNotification();
       }
     });
-
-    function detectContentType(text: string) {
-      if (/^(http|https):\/\/[^ "]+$/.test(text)) {
-        return "url";
-      }
-      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text)) {
-        return "email";
-      }
-      if (
-        text.includes("{") ||
-        text.includes("function") ||
-        text.includes("class")
-      ) {
-        return "code";
-      }
-      return "text";
-    }
 
     function showSaveNotification() {
       const notification = document.createElement("div");
