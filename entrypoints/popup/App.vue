@@ -1,7 +1,11 @@
 <template>
   <div class="min-h-screen bg-gray-100 p-4">
     <header class="mb-6">
-      <h1 class="text-2xl font-bold text-gray-800">文本收藏夹</h1>
+      <h1
+        class="text-2xl font-bold text-blue-900 p-2 mb-2 flex justify-center bg-blue-200 rounded-lg"
+      >
+        抓住它!
+      </h1>
       <SearchBar @search="handleSearch" />
       <div class="mt-4 flex gap-2">
         <button
